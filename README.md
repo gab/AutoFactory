@@ -30,7 +30,12 @@ ISort GetSort(string algorithm)
 ```
 
 AutoFactory internally uses AutoFac to create a factory of concrete clases (parts) from a base class allowing to seek parts from any characteristic of its type before instantiating it (i.e. name convention, attribute convention).
-Instantiation of the parts is done lazily, so the part would get created only when the client requests it. 
+
+Features
+=====
+- Parts can be seek by type convention or by attribute convention. 
+- Parts are created only when the client requests it (lazy instantiation). 
+- Supports constructor parameters injection.
 
 Pros
 =====
@@ -45,5 +50,4 @@ The concrete classes (parts) must follow these rules:
 - Parts must inherit from a common base class and/or implement a common interface.
 - Parts must share a public constructor with or without parameters.
 - Parts must not be generic classes.
-
 
