@@ -6,3 +6,4 @@ D:\MIOS\Proyectos .NET\Generic Factory\Generic Factory\src\GenericFactory\bin\De
 D:\MIOS\Proyectos .NET\Generic Factory\Generic Factory\src\GenericFactory\obj\Debug\Auto Factory.csprojResolveAssemblyReference.cache
 D:\MIOS\Proyectos .NET\Generic Factory\Generic Factory\src\GenericFactory\obj\Debug\AutoFactory.dll
 D:\MIOS\Proyectos .NET\Generic Factory\Generic Factory\src\GenericFactory\obj\Debug\AutoFactory.pdb
+D:\MIOS\Proyectos .NET\Generic Factory\Generic Factory\src\GenericFactory\bin\Debug\AutoFactory.XML
