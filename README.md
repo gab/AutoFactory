@@ -1,6 +1,11 @@
 # AutoFactory
 A factory creator for strategies using AutoFac. Never write a Factory again!.
 
+### NuGet
+```
+PM> Install-Package AutoFactory
+```
+
 It's common to have a a Factory of Strategies pattern that selects one specific implementation of a base class (or interface) based on some convention on the concrete classes (i.e. an Attribute, the Class Name).
 
 With AutoFactory you can convert this:
