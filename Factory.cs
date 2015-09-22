@@ -46,7 +46,11 @@ namespace AutoFactory
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/></param>
         public static IAutoFactory<TBase> Create<TBase>(Assembly assembly = null, object[] constructorParams = null, Type[] constructorParamTypes = null) where TBase : class
         {
-            return Create<TBase>(assembly == null ? null : new[] { assembly }, constructorParams, constructorParamTypes);
+            if (assembly == null)
+            {
+                assembly = Assembly.GetCallingAssembly();
+            }
+            return Create<TBase>(new[] { assembly }, constructorParams, constructorParamTypes);
         }
         /// <summary>
         /// Creates a new factory for the type <typeparamref name="TBase"/> using the given container type <paramref name="containerType"/>, 
@@ -57,7 +61,7 @@ namespace AutoFactory
         /// <param name="assemblies">The assemblies containing the parts</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/></param>
-        public static IAutoFactory<TBase> Create<TBase>(Assembly[] assemblies = null, object[] constructorParams = null, Type[] constructorParamTypes = null) where TBase : class
+        public static IAutoFactory<TBase> Create<TBase>(Assembly[] assemblies, object[] constructorParams = null, Type[] constructorParamTypes = null) where TBase : class
         {
             if (assemblies == null)
             {
@@ -80,7 +84,11 @@ namespace AutoFactory
         public static IAutoFactory Create(Type baseType, Assembly assembly = null, object[] constructorParams = null,
             Type[] constructorParamTypes = null)
         {
-            return Create(baseType, assembly == null ? null : new[] { assembly }, constructorParams, constructorParamTypes);
+            if (assembly == null)
+            {
+                assembly = Assembly.GetCallingAssembly();
+            }
+            return Create(baseType, new[] { assembly }, constructorParams, constructorParamTypes);
         }
         /// <summary>
         /// Creates a new factory for the base type given, 
