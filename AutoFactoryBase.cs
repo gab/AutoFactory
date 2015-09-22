@@ -52,10 +52,10 @@ namespace AutoFactory
         /// <summary>
         /// Composes the parts.
         /// </summary>
-        /// <param name="assembly">The assembly.</param>
+        /// <param name="assemblies">The assemblies to look into.</param>
         /// <param name="dependencies">The dependencies.</param>
         /// <param name="dependencyTypes">The dependency types.</param>
-        internal abstract void ComposeParts(Assembly assembly, object[] dependencies, Type[] dependencyTypes);
+        internal abstract void ComposeParts(Assembly[] assemblies, object[] dependencies, Type[] dependencyTypes);
         /// <summary>
         /// Seeks a part that satisfy a predicate on the concrete type.
         /// </summary>

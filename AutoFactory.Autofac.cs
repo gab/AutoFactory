@@ -55,13 +55,13 @@ namespace AutoFactory
         /// <summary>
         /// Compose parts using Autofac container.
         /// </summary>
-        /// <param name="assembly">The assembly with the parts (when codeBase is null)</param>
+        /// <param name="assemblies">The assemblies to look into.</param>
         /// <param name="dependencies">The dependency values to inject to the part constructor</param>
         /// <param name="dependencyTypes">The dependency impoty types to inject to the part constructor</param>
-        internal override void ComposeParts(Assembly assembly, object[] dependencies, Type[] dependencyTypes)
+        internal override void ComposeParts(Assembly[] assemblies, object[] dependencies, Type[] dependencyTypes)
         {
             var builder = new ContainerBuilder();
-            builder.RegisterAssemblyTypes(assembly)
+            builder.RegisterAssemblyTypes(assemblies)
                 .Where(t => typeof(TBase).IsAssignableFrom(t))
                 .As<TBase>()
                 .WithMetadata(MetadataKey, t => t);
