@@ -52,7 +52,7 @@ Constraints
 =====
 
 The concrete classes (parts) must follow these rules:
-- Parts must be on the same assembly.
+-  ~~Parts must be on the same assembly.~~
 - Parts must inherit from a common base class and/or implement a common interface.
 - Parts must share a public constructor with or without parameters.
 - Parts must not be generic classes.
