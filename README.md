@@ -58,7 +58,7 @@ Suppose you have a strategy in which each class defines its behavior with an Att
     [SortAlgorithm("Bubble Sort")]
     public class BubbleSort : ISort {}
 
-In this case, the factory could be:
+In this case, the factory can use the `SeekPartFromAttribute` method:
 
     private IAutoFactory<ISort> factory = Factory.Create<ISort>();
     
