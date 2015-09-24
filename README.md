@@ -36,6 +36,37 @@ ISort GetSort(string algorithm)
 
 AutoFactory internally uses AutoFac to create a factory of concrete clases (parts) from a base class allowing to seek parts from any characteristic of its type before instantiating it (i.e. name convention, attribute convention).
 
+Attribute Convention
+=====
+
+Suppose you have a strategy in which each class defines its behavior with an Attribute on the class:
+
+    internal sealed class SortAlgorithmAttribute : Attribute
+    {
+        public string Name { get; set; }
+        public SortAlgorithmAttribute(string name) { Name = name; }
+    }
+
+    public interface ISort { }
+
+    [SortAlgorithm("Quick Sort")]
+    public class QuickSort : ISort {}
+
+    [SortAlgorithm("Merge Sort")]
+    public class MergeSort : ISort {}
+
+    [SortAlgorithm("Bubble Sort")]
+    public class BubbleSort : ISort {}
+
+In this case, the factory could be:
+
+    private IAutoFactory<ISort> factory = Factory.Create<ISort>();
+    
+    ISort GetSort(string algorithmName)
+    {
+        return factory.SeekPartFromAttribute<SortAlgorithmAttribute>(a => a.Name.Equals(algorithmName));
+    }
+
 Features
 =====
 - Parts can be seek by type convention or by attribute convention. 
