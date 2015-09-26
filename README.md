@@ -9,7 +9,7 @@ PM> Install-Package AutoFactory
 It's common to have a a Factory of Strategies pattern that selects one specific implementation of a base class (or interface) based on some convention on the concrete classes (i.e. an Attribute, the Class Name).
 
 With AutoFactory you can convert this:
-```
+```c#
 ISort GetSort(string algorithm) 
 {
    switch(algorithm) 
@@ -25,7 +25,7 @@ ISort GetSort(string algorithm)
 }
 ```
 Into this:
-```
+```c#
 private IAutoFactory<ISort> factory = Factory.Create<ISort>();
 
 ISort GetSort(string algorithm)
@@ -35,6 +35,38 @@ ISort GetSort(string algorithm)
 ```
 
 AutoFactory internally uses AutoFac to create a factory of concrete clases (parts) from a base class allowing to seek parts from any characteristic of its type before instantiating it (i.e. name convention, attribute convention).
+
+Attribute Convention
+=====
+
+Suppose you have a strategy in which each class defines its behavior with an Attribute on the class:
+```c#
+    internal sealed class SortAlgorithmAttribute : Attribute
+    {
+        public string Name { get; set; }
+        public SortAlgorithmAttribute(string name) { Name = name; }
+    }
+
+    public interface ISort { }
+
+    [SortAlgorithm("Quick Sort")]
+    public class QuickSort : ISort {}
+
+    [SortAlgorithm("Merge Sort")]
+    public class MergeSort : ISort {}
+
+    [SortAlgorithm("Bubble Sort")]
+    public class BubbleSort : ISort {}
+```
+In this case, the factory can use the `SeekPartFromAttribute` method:
+```c#
+    private IAutoFactory<ISort> factory = Factory.Create<ISort>();
+    
+    ISort GetSort(string algorithmName)
+    {
+        return factory.SeekPartFromAttribute<SortAlgorithmAttribute>(a => a.Name.Equals(algorithmName));
+    }
+```
 
 Features
 =====
@@ -52,7 +84,6 @@ Constraints
 =====
 
 The concrete classes (parts) must follow these rules:
-- Parts must be on the same assembly.
 - Parts must inherit from a common base class and/or implement a common interface.
 - Parts must share a public constructor with or without parameters.
 - Parts must not be generic classes.
