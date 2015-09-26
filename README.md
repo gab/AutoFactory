@@ -68,6 +68,26 @@ In this case, the factory can use the `SeekPartFromAttribute` method:
     }
 ```
 
+Constructor parameters injection
+=====
+Suppose the parts must be created from a constructor with a parameter:
+```c#
+public class QuickSort : ISort 
+{
+	public QuickSort(Stream stream) { ... }
+}
+public class MergeSort : ISort 
+{
+	public MergeSort(Stream stream) { ... }
+}
+```
+In order to create am instance of the parts, we need to supply a stream.
+For example to pass new `MemoryStream`, the factory can be written as:
+```c#
+var factory = Factory.Create<ISort>(TypedParameter.From<Stream>(new MemoryStream()));
+```
+
+
 Features
 =====
 - Parts can be seek by type convention or by attribute convention. 
