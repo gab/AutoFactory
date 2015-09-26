@@ -12,6 +12,16 @@ namespace AutoFactory
     public static class Factory
     {
         #region Generic Interface
+
+        /// <summary>
+        /// Creates a new factory for the type <typeparamref name="TBase"/> in the calling assembly, 
+        /// </summary>
+        /// <typeparam name="TBase">The base class/interface from which the parts derives</typeparam>
+        public static IAutoFactory<TBase> Create<TBase>()
+            where TBase : class
+        {
+            return Create<TBase>(Assembly.GetCallingAssembly(), new TypedParameter[] { });
+        }
         /// <summary>
         /// Creates a new factory for the type <typeparamref name="TBase"/>, 
         /// passing the dependency values and types (<paramref name="constructorParams"/> and <paramref name="constructorParamTypes"/>) to be injected
@@ -20,6 +30,7 @@ namespace AutoFactory
         /// <typeparam name="TBase">The base class/interface from which the parts derives</typeparam>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/></param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory<TBase> Create<TBase>(object[] constructorParams, Type[] constructorParamTypes)
             where TBase : class
         {
@@ -31,6 +42,7 @@ namespace AutoFactory
         /// </summary>
         /// <typeparam name="TBase">The base class/interface from which the parts derives</typeparam>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory<TBase> Create<TBase>(object[] constructorParams)
             where TBase : class
         {
@@ -45,7 +57,8 @@ namespace AutoFactory
         /// <param name="assembly">The assembly containing the parts</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/></param>
-        public static IAutoFactory<TBase> Create<TBase>(Assembly assembly = null, object[] constructorParams = null, Type[] constructorParamTypes = null) where TBase : class
+        [Obsolete("Use an overload accepting a TypedParameter array")]
+        public static IAutoFactory<TBase> Create<TBase>(Assembly assembly, object[] constructorParams = null, Type[] constructorParamTypes = null) where TBase : class
         {
             if (assembly == null)
             {
@@ -62,6 +75,7 @@ namespace AutoFactory
         /// <param name="assemblies">The assemblies containing the parts</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/></param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory<TBase> Create<TBase>(Assembly[] assemblies, object[] constructorParams = null, Type[] constructorParamTypes = null) 
             where TBase : class
         {
@@ -117,6 +131,14 @@ namespace AutoFactory
 
         #region Non-Generic Interface
         /// <summary>
+        /// Creates a new factory for the base type given.
+        /// </summary>
+        /// <param name="baseType">The base class/interface type from which the parts derives</param>
+        public static IAutoFactory Create(Type baseType)
+        {
+            return Create(baseType, Assembly.GetCallingAssembly(), new TypedParameter[] { });
+        }
+        /// <summary>
         /// Creates a new factory for the base type given, 
         /// passing the dependency values and types (<paramref name="constructorParams"/> and <paramref name="constructorParamTypes"/>) to be injected
         /// in the constructor of the parts.
@@ -125,6 +147,7 @@ namespace AutoFactory
         /// <param name="assembly">The assembly containing the parts. (If null, it will use the calling assembly)</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part. (If null, it will use the parameterless contructor)</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/>. Can be null to use the concrete type of <paramref name="constructorParams"/></param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory Create(Type baseType, Assembly assembly = null, object[] constructorParams = null,
             Type[] constructorParamTypes = null)
         {
@@ -143,16 +166,52 @@ namespace AutoFactory
         /// <param name="assemblies">The assemblies containing the parts. (If null, it will use the calling assembly)</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part. (If null, it will use the parameterless contructor)</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/>. Can be null to use the concrete type of <paramref name="constructorParams"/></param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory Create(Type baseType, Assembly[] assemblies = null, object[] constructorParams = null, Type[] constructorParamTypes = null)
         {
-            // Call the Generic CreateProc
-            if (assemblies == null)
+            if (constructorParams == null)
             {
-                assemblies = new [] { Assembly.GetCallingAssembly() };
+                constructorParams = new object[] { };
             }
+            if (constructorParamTypes == null)
+            {
+                constructorParamTypes = new Type[] { };
+            }
+            return Create(baseType, assemblies,
+                constructorParamTypes.Select((pt, i) => new TypedParameter(pt, constructorParams[i])).ToArray());
+        }
+        /// <summary>
+        /// Creates a new factory for the base type given, passing the dependency to be injected in the constructor of the parts.
+        /// </summary>
+        /// <param name="baseType">The base class/interface type from which the parts derives</param>
+        /// <param name="constructorParams">The dependency types and values (constructor parameters) to inject when creating a part.</param>
+        public static IAutoFactory Create(Type baseType, params TypedParameter[] constructorParams)
+        {
+            return Create(baseType, Assembly.GetCallingAssembly(), constructorParams);
+        }
+        /// <summary>
+        /// Creates a new factory for the base type given, on the assembly given, passing the dependency to be injected in the constructor of the parts.
+        /// </summary>
+        /// <param name="baseType">The base class/interface type from which the parts derives</param>
+        /// <param name="assembly">The assembly to llok into.</param>
+        /// <param name="constructorParams">The constructor parameters.</param>
+        /// <returns>IAutoFactory.</returns>
+        public static IAutoFactory Create(Type baseType, Assembly assembly, params TypedParameter[] constructorParams)
+        {
+            return Create(baseType, new[] { assembly }, constructorParams);
+        }
+        /// <summary>
+        /// Creates a new factory for the base type given, on the given assemblies, passing the dependency to be injected in the constructor of the parts.
+        /// </summary>
+        /// <param name="baseType">The base class/interface type from which the parts derives</param>
+        /// <param name="assemblies">The assemblies to look into.</param>
+        /// <param name="constructorParams">The constructor parameters.</param>
+        public static IAutoFactory Create(Type baseType, Assembly[] assemblies, params TypedParameter[] constructorParams)
+        {
+            // Call the Generic CreateProc
             var method = typeof(Factory).GetMethod("CreateProc", BindingFlags.Static | BindingFlags.NonPublic);
             var genericMethod = method.MakeGenericMethod(baseType);
-            var factory = (IAutoFactory)genericMethod.Invoke(null, new object[] { assemblies, constructorParams, constructorParamTypes });
+            var factory = (IAutoFactory)genericMethod.Invoke(null, new object[] { assemblies, constructorParams });
             return factory;
         }
         #endregion
