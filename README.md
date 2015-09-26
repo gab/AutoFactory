@@ -81,8 +81,8 @@ public class MergeSort : ISort
 	public MergeSort(Stream stream) { ... }
 }
 ```
-In order to create am instance of the parts, we need to supply a stream.
-For example to pass new `MemoryStream`, the factory can be written as:
+In order to create an instance of the parts, we need to supply a stream.
+For example to pass a new `MemoryStream`, the factory can be written as:
 ```c#
 var factory = Factory.Create<ISort>(TypedParameter.From<Stream>(new MemoryStream()));
 ```
