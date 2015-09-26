@@ -54,11 +54,12 @@
     <Compile Include="AutoFactoryBase.cs" />
     <Compile Include="IAutoFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypedParameter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <Compile Include="IAutoFactory.Generic.cs" />
-    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

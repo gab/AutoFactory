@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -36,7 +37,7 @@ namespace AutoFactory
             return Create<TBase>(Assembly.GetCallingAssembly(), constructorParams);
         }
         /// <summary>
-        /// Creates a new factory for the type <typeparamref name="TBase"/> using the given container type <paramref name="containerType"/>, 
+        /// Creates a new factory for the type <typeparamref name="TBase"/> 
         /// passing the dependency values and types (<paramref name="constructorParams"/> and <paramref name="constructorParamTypes"/>) to be injected
         /// in the constructor of the parts.
         /// </summary>
@@ -53,7 +54,7 @@ namespace AutoFactory
             return Create<TBase>(new[] { assembly }, constructorParams, constructorParamTypes);
         }
         /// <summary>
-        /// Creates a new factory for the type <typeparamref name="TBase"/> using the given container type <paramref name="containerType"/>, 
+        /// Creates a new factory for the type <typeparamref name="TBase"/> 
         /// passing the dependency values and types (<paramref name="constructorParams"/> and <paramref name="constructorParamTypes"/>) to be injected
         /// in the constructor of the parts.
         /// </summary>
@@ -61,13 +62,56 @@ namespace AutoFactory
         /// <param name="assemblies">The assemblies containing the parts</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/></param>
-        public static IAutoFactory<TBase> Create<TBase>(Assembly[] assemblies, object[] constructorParams = null, Type[] constructorParamTypes = null) where TBase : class
+        public static IAutoFactory<TBase> Create<TBase>(Assembly[] assemblies, object[] constructorParams = null, Type[] constructorParamTypes = null) 
+            where TBase : class
         {
             if (assemblies == null)
             {
                 assemblies = new [] { Assembly.GetCallingAssembly() };
             }
-            return CreateProc<TBase>(assemblies, constructorParams, constructorParamTypes);
+            if (constructorParamTypes == null)
+            {
+                constructorParamTypes = constructorParams != null ? constructorParams.Select(o => o.GetType()).ToArray() : new Type[] { };
+            }
+            if (constructorParams == null)
+            {
+                constructorParams = new object[] { };
+            }
+            return CreateProc<TBase>(assemblies, 
+                constructorParams.Select((o, i) => new TypedParameter(constructorParamTypes[i], o)).ToArray());
+        }
+        /// <summary>
+        /// Creates a new factory for the type <typeparamref name="TBase"/> in the given assembly, using the given constructor parameters on <paramref name="constructorParams"/>, 
+        /// </summary>
+        /// <typeparam name="TBase">The type of the t base.</typeparam>
+        /// <param name="assembly">The assembly to look into.</param>
+        /// <param name="constructorParams">The constructor parameters.</param>
+        public static IAutoFactory<TBase> Create<TBase>(Assembly assembly, params TypedParameter[] constructorParams)
+            where TBase : class
+        {
+            return CreateProc<TBase>(new[] { assembly }, constructorParams);
+        }
+        /// <summary>
+        /// Creates a new factory for the type <typeparamref name="TBase" /> in the given assemblies, using the given constructor parameters on <paramref name="constructorParams" />,
+        /// </summary>
+        /// <typeparam name="TBase">The type of the t base.</typeparam>
+        /// <param name="assemblies">The assemblies to look into.</param>
+        /// <param name="constructorParams">The constructor parameters.</param>
+        /// <returns>IAutoFactory{``0}.</returns>
+        public static IAutoFactory<TBase> Create<TBase>(Assembly[] assemblies, params TypedParameter[] constructorParams)
+            where TBase : class
+        {
+            return CreateProc<TBase>(assemblies, constructorParams);
+        }
+        /// <summary>
+        /// Creates a new factory for the type <typeparamref name="TBase"/> using the given constructor parameters on <paramref name="constructorParams"/>, 
+        /// </summary>
+        /// <typeparam name="TBase">The type of the t base.</typeparam>
+        /// <param name="constructorParams">The constructor parameters.</param>
+        public static IAutoFactory<TBase> Create<TBase>(params TypedParameter[] constructorParams)
+            where TBase : class
+        {
+            return CreateProc<TBase>(new[] { Assembly.GetCallingAssembly() }, constructorParams);
         }
         #endregion
 
@@ -115,23 +159,16 @@ namespace AutoFactory
 
         #region Private methods
         /// <summary>
-        /// Factory method to create and compose the generic factory
+        /// Creates a new factory (private method)
         /// </summary>
-        private static IAutoFactory<TBase> CreateProc<TBase>(Assembly[] assemblies, object[] constructorParams, Type[] constructorParamTypes)
+        private static IAutoFactory<TBase> CreateProc<TBase>(Assembly[] assemblies, IEnumerable<TypedParameter> constructorParams)
             where TBase : class
         {
-            if (constructorParamTypes == null)
-            {
-                constructorParamTypes = constructorParams != null ? constructorParams.Select(o => o.GetType()).ToArray() : new Type[] { };
-            }
-            if (constructorParams == null)
-            {
-                constructorParams = new object[] { };
-            }
-            AutoFactoryBase<TBase> factory = new AutoFactoryAutofac<TBase>();
-            factory.ComposeParts(assemblies, constructorParams, constructorParamTypes);
+            var factory = new AutoFactoryAutofac<TBase>();
+            factory.ComposeParts(assemblies, constructorParams.Select(p => new Autofac.TypedParameter(p.Type, p.Value)).ToArray());
             return factory;
         }
+
         #endregion
     }
 }
