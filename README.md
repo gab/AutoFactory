@@ -68,6 +68,26 @@ In this case, the factory can use the `SeekPartFromAttribute` method:
     }
 ```
 
+Constructor parameters injection
+=====
+Suppose the parts must be created from a constructor with a parameter:
+```c#
+public class QuickSort : ISort 
+{
+	public QuickSort(Stream stream) { ... }
+}
+public class MergeSort : ISort 
+{
+	public MergeSort(Stream stream) { ... }
+}
+```
+In order to create an instance of the parts, we need to supply a stream.
+For example to pass a new `MemoryStream`, the factory can be created as follows:
+```c#
+var factory = Factory.Create<ISort>(TypedParameter.From<Stream>(new MemoryStream()));
+```
+
+
 Features
 =====
 - Parts can be seek by type convention or by attribute convention. 
@@ -86,5 +106,5 @@ Constraints
 The concrete classes (parts) must follow these rules:
 - Parts must inherit from a common base class and/or implement a common interface.
 - Parts must share a public constructor with or without parameters.
-- Parts must not be generic classes.
+- Parts must **not** be generic classes.
 
