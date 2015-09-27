@@ -87,6 +87,15 @@ namespace AutoFactory
                     where attr != null && predicate(attr)
                     select TryResolve(p);
         }
+        /// <summary>
+        /// Gets a part from its type.
+        /// </summary>
+        /// <param name="partType">The part type</param>
+        public override object GetPart(Type partType)
+        {
+            return SeekPart(t => t == partType);
+        }
+
         #endregion
     }
 }

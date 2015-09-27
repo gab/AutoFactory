@@ -6,7 +6,7 @@ namespace AutoFactory
     /// <summary>
     /// Generic Factory generic interface.
     /// </summary>
-    public interface IAutoFactory<out TBase> : IAutoFactory
+    public interface IAutoFactory<TBase> : IAutoFactory
         where TBase : class
     {
         /// <summary>
@@ -35,5 +35,10 @@ namespace AutoFactory
         /// <param name="predicate">Predicate function to identify the concrete type needed</param>
         new IEnumerable<TBase> SeekPartsFromAttribute<TAttribute>(Func<TAttribute, bool> predicate)
             where TAttribute : Attribute;
+        /// <summary>
+        /// Gets a part from its type.
+        /// </summary>
+        /// <typeparam name="T">The part type</typeparam>
+        T GetPart<T>() where T : class, TBase;
     }
 }

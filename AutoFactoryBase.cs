@@ -92,5 +92,19 @@ namespace AutoFactory
         {
             return SeekPartsFromAttribute(predicate);
         }
+        /// <summary>
+        /// Gets a part from its type.
+        /// </summary>
+        /// <typeparam name="T">The part type</typeparam>
+        public T GetPart<T>() where T : class, TBase 
+        {
+            return GetPart(typeof (T)) as T;
+        }
+        /// <summary>
+        /// Gets a part from its type.
+        /// </summary>
+        /// <param name="partType">The part type</param>
+        public abstract object GetPart(Type partType);
+
     }
 }

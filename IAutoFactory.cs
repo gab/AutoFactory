@@ -33,6 +33,11 @@ namespace AutoFactory
         /// Concrete classes must have the attribute.</typeparam>
         /// <param name="predicate">Predicate function to identify the concrete type needed</param>
         IEnumerable SeekPartsFromAttribute<TAttribute>(Func<TAttribute, bool> predicate)
-            where TAttribute : Attribute;        
+            where TAttribute : Attribute;
+        /// <summary>
+        /// Gets a part from its type.
+        /// </summary>
+        /// <param name="partType">The part type</param>
+        object GetPart(Type partType);
     }
 }
