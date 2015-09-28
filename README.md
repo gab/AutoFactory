@@ -1,7 +1,7 @@
 # AutoFactory
 A factory creator for strategies using AutoFac. Never write a Factory again!.
 
-### NuGet
+### [NuGet](https://www.nuget.org/packages/AutoFactory/)
 ```
 PM> Install-Package AutoFactory
 ```
