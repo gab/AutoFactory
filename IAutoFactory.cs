@@ -39,5 +39,9 @@ namespace AutoFactory
         /// </summary>
         /// <param name="partType">The part type</param>
         object GetPart(Type partType);
+        /// <summary>
+        /// Returns all the part types without instanting any part.
+        /// </summary>
+        Type[] GetPartTypes();
     }
 }

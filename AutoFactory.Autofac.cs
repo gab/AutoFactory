@@ -95,7 +95,13 @@ namespace AutoFactory
         {
             return SeekPart(t => t == partType);
         }
-
+        /// <summary>
+        /// Returns the discovered part types without instanting any part.
+        /// </summary>
+        public override Type[] GetPartTypes()
+        {
+            return _parts.Select(p => p.Metadata[MetadataKey] as Type).ToArray();
+        }
         #endregion
     }
 }

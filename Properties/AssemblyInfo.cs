@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Automatic Factory")]
-[assembly: AssemblyDescription("A factory creator for strategies using AutoFac. Never write a Factory again!.")]
+[assembly: AssemblyDescription("A factory creator using AutoFac. Never write a Factory again!.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Federico Colombo")]
 [assembly: AssemblyProduct("AutoFactory")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.1.0.2")]
-[assembly: AssemblyFileVersion("2.1.0.2")]
+[assembly: AssemblyVersion("3.0.0.0")]
+[assembly: AssemblyFileVersion("3.0.0.0")]
