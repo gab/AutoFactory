@@ -30,6 +30,7 @@ namespace AutoFactory
         /// <typeparam name="TBase">The base class/interface from which the parts derives</typeparam>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/></param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory<TBase> Create<TBase>(object[] constructorParams, Type[] constructorParamTypes)
             where TBase : class
         {
@@ -41,6 +42,7 @@ namespace AutoFactory
         /// </summary>
         /// <typeparam name="TBase">The base class/interface from which the parts derives</typeparam>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory<TBase> Create<TBase>(object[] constructorParams)
             where TBase : class
         {
@@ -55,6 +57,7 @@ namespace AutoFactory
         /// <param name="assembly">The assembly containing the parts</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/></param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory<TBase> Create<TBase>(Assembly assembly, object[] constructorParams = null, Type[] constructorParamTypes = null) where TBase : class
         {
             if (assembly == null)
@@ -72,6 +75,7 @@ namespace AutoFactory
         /// <param name="assemblies">The assemblies containing the parts</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part.</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/></param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory<TBase> Create<TBase>(Assembly[] assemblies, object[] constructorParams = null, Type[] constructorParamTypes = null) 
             where TBase : class
         {
@@ -143,6 +147,7 @@ namespace AutoFactory
         /// <param name="assembly">The assembly containing the parts. (If null, it will use the calling assembly)</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part. (If null, it will use the parameterless contructor)</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/>. Can be null to use the concrete type of <paramref name="constructorParams"/></param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory Create(Type baseType, Assembly assembly = null, object[] constructorParams = null,
             Type[] constructorParamTypes = null)
         {
@@ -161,6 +166,7 @@ namespace AutoFactory
         /// <param name="assemblies">The assemblies containing the parts. (If null, it will use the calling assembly)</param>
         /// <param name="constructorParams">The dependency values (constructor parameters) to inject when creating a part. (If null, it will use the parameterless contructor)</param>
         /// <param name="constructorParamTypes">The dependency types (constructor parameter types). Must be of the same size as <paramref name="constructorParams"/>. Can be null to use the concrete type of <paramref name="constructorParams"/></param>
+        [Obsolete("Use an overload accepting a TypedParameter array")]
         public static IAutoFactory Create(Type baseType, Assembly[] assemblies = null, object[] constructorParams = null, Type[] constructorParamTypes = null)
         {
             if (constructorParams == null)
