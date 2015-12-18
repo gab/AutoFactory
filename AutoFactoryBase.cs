@@ -54,7 +54,7 @@ namespace AutoFactory
         /// </summary>
         /// <param name="assemblies">The assemblies to look into.</param>
         /// <param name="dependencies">The dependencies.</param>
-        internal abstract void ComposeParts(Assembly[] assemblies, IEnumerable<Autofac.TypedParameter> dependencies);
+        internal abstract void ComposeParts(Assembly[] assemblies, Autofac.TypedParameter[] dependencies);
         /// <summary>
         /// Seeks a part that satisfy a predicate on the concrete type.
         /// </summary>
@@ -104,7 +104,10 @@ namespace AutoFactory
         /// Gets a part from its type.
         /// </summary>
         /// <param name="partType">The part type</param>
-        public abstract object GetPart(Type partType);
+        public object GetPart(Type partType)
+        {
+            return SeekPart(t => t == partType);
+        }
         /// <summary>
         /// Returns all the part types without instanting any part.
         /// </summary>

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using Autofac.Core;
 using Autofac.Features.Metadata;
 
 namespace AutoFactory
@@ -43,7 +44,14 @@ namespace AutoFactory
             {
                 throw new AutoFactoryException(string.Format("Factory resolution failed for type {0}", typeof(TBase).FullName));
             }
-            return part.Value.Value;
+            try
+            {
+                return part.Value.Value;
+            }
+            catch (Exception ex)
+            {
+                throw new AutoFactoryException(string.Format("Factory resolution failed for type {0}. See inner exception for details.", typeof(TBase).FullName), ex);
+            }
         }
         #endregion
 
@@ -53,15 +61,16 @@ namespace AutoFactory
         /// </summary>
         /// <param name="assemblies">The assemblies to look into.</param>
         /// <param name="dependencies">The dependency values to inject to the part constructor</param>
-        internal override void ComposeParts(Assembly[] assemblies, IEnumerable<Autofac.TypedParameter> dependencies)
+        internal override void ComposeParts(Assembly[] assemblies, Autofac.TypedParameter[] dependencies)
         {
             var builder = new ContainerBuilder();
             builder.RegisterAssemblyTypes(assemblies)
-                .Where(t => typeof(TBase).IsAssignableFrom(t))
+                .Where(t => typeof (TBase).IsAssignableFrom(t))
                 .As<TBase>()
-                .WithMetadata(MetadataKey, t => t);
+                .WithMetadata(MetadataKey, t => t)
+                .FindConstructorsWith(t => new[] {t.GetConstructor(dependencies.Select(d => d.Type).ToArray())});
             _container = builder.Build();
-            _parts = _container.Resolve<IEnumerable<Meta<Lazy<TBase>>>>(dependencies);
+            _parts = _container.Resolve<IEnumerable<Meta<Lazy<TBase>>>>((IEnumerable<Autofac.TypedParameter>)dependencies);
         }
         /// <summary>
         /// Seeks a part that satisfy a predicate on the concrete type.
@@ -86,14 +95,6 @@ namespace AutoFactory
                     let attr = (p.Metadata[MetadataKey] as Type).GetCustomAttribute<TAttribute>()
                     where attr != null && predicate(attr)
                     select TryResolve(p);
-        }
-        /// <summary>
-        /// Gets a part from its type.
-        /// </summary>
-        /// <param name="partType">The part type</param>
-        public override object GetPart(Type partType)
-        {
-            return SeekPart(t => t == partType);
         }
         /// <summary>
         /// Returns the discovered part types without instanting any part.
