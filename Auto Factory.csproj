@@ -59,7 +59,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <Compile Include="IAutoFactory.Generic.cs" />
-    <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
