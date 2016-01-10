@@ -26,6 +26,8 @@ ISort GetSort(string algorithm)
 ```
 Into this:
 ```c#
+using AutoFactory;
+
 private IAutoFactory<ISort> factory = Factory.Create<ISort>();
 
 ISort GetSort(string algorithm)
@@ -34,7 +36,7 @@ ISort GetSort(string algorithm)
 }
 ```
 
-AutoFactory internally uses AutoFac to create a factory of concrete clases (parts) from a base class allowing to seek parts from any characteristic of its type before instantiating it (i.e. name convention, attribute convention).
+AutoFactory internally uses [AutoFac](https://github.com/autofac/Autofac#autofac) to create a factory of concrete clases (parts) from a base class allowing to seek parts from any characteristic of its type before instantiating it (i.e. name convention, attribute convention).
 
 Attribute Convention
 =====
@@ -85,6 +87,11 @@ In order to create an instance of the parts, we need to supply a stream.
 For example to pass a new `MemoryStream`, the factory can be created as follows:
 ```c#
 var factory = Factory.Create<ISort>(TypedParameter.From<Stream>(new MemoryStream()));
+```
+
+You can get all the part types (without creating any instance) with the `GetPartTypes()` method:
+```c#
+Type[] types = factory.GetPartTypes();
 ```
 
 
