@@ -6,7 +6,7 @@ A factory creator for strategies using AutoFac. Never write a Factory again!.
 PM> Install-Package AutoFactory
 ```
 
-It's common to have a a Factory of Strategies pattern that selects one specific implementation of a base class (or interface) based on some convention on the concrete classes (i.e. an Attribute, the Class Name).
+It's common to have a _Factory of Strategies_ pattern to select one specific implementation of a base class (or interface) based on some convention on the concrete classes (i.e. an Attribute, the Class Name).
 
 With AutoFactory you can convert this:
 ```c#
@@ -36,7 +36,7 @@ ISort GetSort(string algorithm)
 }
 ```
 
-AutoFactory internally uses [AutoFac](https://github.com/autofac/Autofac#autofac) to create a factory of concrete clases (parts) from a base class allowing to seek parts from any characteristic of its type before instantiating it (i.e. name convention, attribute convention).
+AutoFactory internally uses [AutoFac](https://github.com/autofac/Autofac#autofac) to create a factory of concrete classes (parts) from a base class allowing to seek parts from any characteristic of its type before instantiating it (i.e. name convention, attribute convention).
 
 Attribute Convention
 =====
@@ -60,7 +60,7 @@ Suppose you have a strategy in which each class defines its behavior with an Att
     [SortAlgorithm("Bubble Sort")]
     public class BubbleSort : ISort {}
 ```
-In this case, the factory can use the `SeekPartFromAttribute` method:
+For this case, you can use the factory `SeekPartFromAttribute` method:
 ```c#
     private IAutoFactory<ISort> factory = Factory.Create<ISort>();
     
@@ -83,13 +83,13 @@ public class MergeSort : ISort
 	public MergeSort(Stream stream) { ... }
 }
 ```
-In order to create an instance of the parts, we need to supply a stream.
+In order to create an instance of the parts, we need to supply a parameter (Stream).
 For example to pass a new `MemoryStream`, the factory can be created as follows:
 ```c#
 var factory = Factory.Create<ISort>(TypedParameter.From<Stream>(new MemoryStream()));
 ```
 
-You can get all the part types (without creating any instance) with the `GetPartTypes()` method:
+To get all the part types (without creating any instance) use the `GetPartTypes()` method:
 ```c#
 Type[] types = factory.GetPartTypes();
 ```
