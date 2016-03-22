@@ -93,7 +93,7 @@ namespace AutoFactory
         {
             foreach (var p in _parts)
             {
-                var attributes = (p.Metadata[MetadataKey] as Type).GetCustomAttributes<TAttribute>();
+                var attributes = (p.Metadata[MetadataKey] as Type).GetCustomAttributes<TAttribute>(false);
                 if (attributes != null)
                 {
                     foreach (var attr in attributes.Where(predicate))

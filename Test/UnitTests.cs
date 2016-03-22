@@ -29,6 +29,10 @@ namespace Test
             {
                 var err = factory.SeekPartFromAttribute<LocaleAttribute>(attr => attr.Locale == "en-US");
             });
+            var commonPart = factory.SeekPartFromAttribute<LocaleAttribute>(attr => attr.Locale == "Common");
+            var allparts = factory.SeekPartsFromAttribute<LocaleAttribute>(attr => true).ToList();
+            Assert.AreEqual(typeof (LocaleBase), commonPart.GetType());
+            Assert.AreEqual(4, allparts.Count);
         }
 
         [Test]
@@ -356,14 +360,21 @@ namespace Test
     public interface ILocale
     {
     }
+
+    [Locale(Locale = "Common")]
+    public class LocaleBase : ILocale
+    {
+
+    }
+
     [Locale(Locale = "en-US")]
-    public class Class1 : ILocale
+    public class Class1 : LocaleBase
     {
 
     }
     [Locale(Locale = "en-US")]
     [Locale(Locale = "ko-KR")]
-    public class Class2 : ILocale
+    public class Class2 : LocaleBase
     {
 
     }
