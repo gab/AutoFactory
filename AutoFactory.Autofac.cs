@@ -73,7 +73,7 @@ namespace AutoFactory
             _parts = _container.Resolve<IEnumerable<Meta<Lazy<TBase>>>>((IEnumerable<Autofac.TypedParameter>)dependencies);
         }
         /// <summary>
-        /// Seeks a part that satisfy a predicate on the concrete type.
+        /// Seeks the parts that satisfy a predicate on the concrete type.
         /// </summary>
         /// <param name="predicate">Predicate function to identify the concrete type needed</param>
         /// <returns>IEnumerable{`0}.</returns>
@@ -83,7 +83,7 @@ namespace AutoFactory
                                   .Select(TryResolve);
         }
         /// <summary>
-        /// Seeks a part that satisfy a condition on a specified attribute.
+        /// Seeks the parts that satisfy a condition on a specified attribute.
         /// </summary>
         /// <typeparam name="TAttribute">The attribute type on the concrete class.
         /// Concrete classes must have the attribute.</typeparam>
@@ -91,11 +91,19 @@ namespace AutoFactory
         /// <returns>IEnumerable{`0}.</returns>
         public override IEnumerable<TBase> SeekPartsFromAttribute<TAttribute>(Func<TAttribute, bool> predicate)
         {
-            return from p in _parts
-                    let attr = (p.Metadata[MetadataKey] as Type).GetCustomAttribute<TAttribute>()
-                    where attr != null && predicate(attr)
-                    select TryResolve(p);
+            foreach (var p in _parts)
+            {
+                var attributes = (p.Metadata[MetadataKey] as Type).GetCustomAttributes<TAttribute>();
+                if (attributes != null)
+                {
+                    foreach (var attr in attributes.Where(predicate))
+                    {
+                        yield return TryResolve(p);
+                    }
+                }
+            }
         }
+
         /// <summary>
         /// Returns the discovered part types without instanting any part.
         /// </summary>

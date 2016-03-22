@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using AutoFactory;
 using NUnit.Framework;
@@ -12,6 +13,22 @@ namespace Test
         public void SetupForEachTest()
         {
             Animal.Reset();
+        }
+
+        [Test]
+        public void Test_MutipleAttribute()
+        {
+            var factory = AutoFactory.Factory.Create<ILocale>();
+            var parts = factory.SeekPartsFromAttribute<LocaleAttribute>(attr => attr.Locale == "en-US").ToList();
+            Assert.AreEqual(2, parts.Count);
+            Assert.IsTrue(parts.Any(p => p.GetType() == typeof (Class1)));
+            Assert.IsTrue(parts.Any(p => p.GetType() == typeof (Class2)));
+            var part = factory.SeekPartFromAttribute<LocaleAttribute>(attr => attr.Locale == "ko-KR");
+            Assert.IsTrue(part.GetType() == typeof (Class2));
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var err = factory.SeekPartFromAttribute<LocaleAttribute>(attr => attr.Locale == "en-US");
+            });
         }
 
         [Test]
@@ -29,7 +46,7 @@ namespace Test
         [Test]
         public void Test_CreateOnlyOnce()
         {
-            var fact = AutoFactory.Factory.Create<IAnimal>(typeof(Animal).Assembly);
+            var fact = AutoFactory.Factory.Create<IAnimal>(typeof (Animal).Assembly);
             var dog = fact.GetPart<Dog>();
             var dog2 = fact.GetPart<Dog>();
             var dog3 = fact.GetPart<Dog>();
@@ -63,7 +80,8 @@ namespace Test
         [Test]
         public void Test_Create_CtorIAnimalParam()
         {
-            var fact = AutoFactory.Factory.Create<Animal>(new []{ typeof(Animal).Assembly }, TypedParameter.From<IAnimal>(new Cat(2)));
+            var fact = AutoFactory.Factory.Create<Animal>(new[] {typeof (Animal).Assembly},
+                TypedParameter.From<IAnimal>(new Cat(2)));
             var dog = fact.SeekPart(p => p.Name == "Dog");
             Assert.AreEqual(1, Animal.Dogs);
             Assert.AreEqual(2, dog.Friend.Age);
@@ -74,7 +92,8 @@ namespace Test
         [Test]
         public void Test_Create_CtorTwoParams()
         {
-            var fact = AutoFactory.Factory.Create<Animal>(TypedParameter.From<Animal>(new Cat(2)), TypedParameter.From(1));
+            var fact = AutoFactory.Factory.Create<Animal>(TypedParameter.From<Animal>(new Cat(2)),
+                TypedParameter.From(1));
             var dog = fact.SeekPart(p => p.Name == "Dog");
             Assert.AreEqual(1, Animal.Dogs);
             Assert.AreEqual(2, dog.Friend.Age);
@@ -86,7 +105,8 @@ namespace Test
         [Test]
         public void Test_Create_CtorTwoParams_Rev()
         {
-            var fact = AutoFactory.Factory.Create<Animal>(typeof(Animal).Assembly, TypedParameter.From(1), TypedParameter.From<Animal>(new Cat(2)));
+            var fact = AutoFactory.Factory.Create<Animal>(typeof (Animal).Assembly, TypedParameter.From(1),
+                TypedParameter.From<Animal>(new Cat(2)));
             var dog = fact.SeekPart(p => p.Name == "Dog");
             Assert.AreEqual(1, Animal.Dogs);
             Assert.AreEqual(2, dog.Friend.Age);
@@ -130,7 +150,8 @@ namespace Test
         public void Test_SeekPartFromAttr()
         {
             var fact = AutoFactory.Factory.Create<Animal>(TypedParameter.From(7));
-            var dog = fact.SeekPartFromAttribute<DescriptionAttribute>(_ => _.Properties["Description"][0].ToString() == "Dog");
+            var dog =
+                fact.SeekPartFromAttribute<DescriptionAttribute>(_ => _.Properties["Description"][0].ToString() == "Dog");
             Assert.AreEqual(0, Animal.Cats);
             Assert.AreEqual(1, Animal.Dogs);
             Assert.AreEqual(7, dog.Age);
@@ -152,17 +173,18 @@ namespace Test
             var fact = AutoFactory.Factory.Create<Animal>(TypedParameter.From(7));
             Assert.Throws<AutoFactoryException>(() =>
             {
-                var part = fact.SeekPart(t => t.Name == "Pete");
+                var part = fact.SeekPart(t => t.Name == "Lion");
             });
         }
 
         [Test]
         public void Test_NonGeneric()
         {
-            var fact = AutoFactory.Factory.Create(typeof(Animal));
-            var duck = fact.GetPart(typeof(Duck));
+            var fact = AutoFactory.Factory.Create(typeof (Animal));
+            var duck = fact.GetPart(typeof (Duck));
             var dog = fact.SeekPart(t => t.Name == "Dog");
-            var cat = fact.SeekPartFromAttribute<DescriptionAttribute>(a => a.Properties["Description"][0].ToString() == "Cat");
+            var cat =
+                fact.SeekPartFromAttribute<DescriptionAttribute>(a => a.Properties["Description"][0].ToString() == "Cat");
             Assert.IsInstanceOf<Duck>(duck);
             Assert.IsInstanceOf<Dog>(dog);
             Assert.IsInstanceOf<Cat>(cat);
@@ -170,7 +192,7 @@ namespace Test
         }
 
     }
-    
+
     public interface IAnimal
     {
         int Age { get; set; }
@@ -185,18 +207,25 @@ namespace Test
         public static int CtorIAnimal = 0;
         public static int CtorAgeFriend = 0;
         public static int CtorFriendAge = 0;
-        public static int Instances { get { return Dogs + Cats + Ducks; } }
+
+        public static int Instances
+        {
+            get { return Dogs + Cats + Ducks; }
+        }
+
         public int Age { get; set; }
         public IAnimal Friend { get; set; }
+
         public static void Reset()
         {
             Dogs = Cats = Ducks = CtorAgeFriend = CtorIAnimal = CtorFriendAge = 0;
         }
     }
+
     [Description("Dog")]
     public class Dog : Animal
     {
-        public Dog() 
+        public Dog()
         {
             Interlocked.Increment(ref Dogs);
         }
@@ -235,7 +264,7 @@ namespace Test
     [Description("Cat")]
     public class Cat : Animal
     {
-        public Cat() 
+        public Cat()
         {
             Interlocked.Increment(ref Cats);
         }
@@ -255,7 +284,7 @@ namespace Test
             Interlocked.Increment(ref CtorIAnimal);
             Friend = friend;
         }
-        
+
         public Cat(int age, Animal friend) : this()
         {
             Interlocked.Increment(ref CtorAgeFriend);
@@ -315,7 +344,27 @@ namespace Test
         }
     }
 
-    public class Pete : Animal
+    public class Lion : Animal
     {
+    }
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public sealed class LocaleAttribute : Attribute
+    {
+        public string Locale { get; set; }
+    }
+    public interface ILocale
+    {
+    }
+    [Locale(Locale = "en-US")]
+    public class Class1 : ILocale
+    {
+
+    }
+    [Locale(Locale = "en-US")]
+    [Locale(Locale = "ko-KR")]
+    public class Class2 : ILocale
+    {
+
     }
 }
