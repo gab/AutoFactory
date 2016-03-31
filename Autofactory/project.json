@@ -1,0 +1,74 @@
+﻿{
+  "version": "5.0.0-*",
+  "description": "Autofactory",
+  "authors": [ "Federico Colombo" ],
+  "tags": [ "Autofac", "Autofactory", "IoC", "DNX" ],
+  "projectUrl": "https://github.com/thepirat000/AutoFactory",
+  "licenseUrl": "",
+  "runtimes": {
+    "win10-arm": { },
+    "win10-arm-aot": { },
+    "win10-x86": { },
+    "win10-x86-aot": { },
+    "win10-x64": { },
+    "win10-x64-aot": { }
+  },
+  "frameworks": {
+    "uap10.0": { },
+    "dnxcore50": {
+      "dependencies": {
+        "System.Collections": "4.0.11-beta-*",
+        "System.Collections.Concurrent": "4.0.11-beta-*",
+        "System.ComponentModel": "4.0.1-beta-*",
+        "System.Diagnostics.Debug": "4.0.11-beta-*",
+        "System.Diagnostics.Tools": "4.0.1-beta-*",
+        "System.Globalization": "4.0.11-beta-*",
+        "System.Linq": "4.0.1-beta-*",
+        "System.Linq.Expressions": "4.0.11-beta-*",
+        "System.Reflection": "4.1.0-beta-*",
+        "System.Reflection.Extensions": "4.0.1-beta-*",
+        "System.Resources.ResourceManager": "4.0.1-beta-*",
+        "System.Runtime": "4.0.21-beta-*",
+        "System.Threading.Tasks": "4.0.11-beta-*"
+      }
+    },
+    "dotnet5.4": {
+      "dependencies": {
+        "System.Collections.Concurrent": "4.0.11-beta-*",
+        "System.ComponentModel": "4.0.1-beta-*",
+        "System.Diagnostics.Debug": "4.0.11-beta-*",
+        "System.Diagnostics.Tools": "4.0.1-beta-*",
+        "System.Globalization": "4.0.11-beta-*",
+        "System.Linq": "4.0.1-beta-*",
+        "System.Linq.Expressions": "4.0.11-beta-*",
+        "System.Reflection": "4.1.0-beta-*",
+        "System.Reflection.Extensions": "4.0.1-beta-*",
+        "System.Reflection.Primitives": "4.0.1-beta-*",
+        "System.Resources.ResourceManager": "4.0.1-beta-*",
+        "System.Runtime": "4.0.21-beta-*",
+        "System.Threading": "4.0.11-beta-*"
+      }
+    },
+    "net45": { },
+    "netcore45": {
+      "dependencies": {
+        "System.Collections.Concurrent": "4.0.11-beta-*",
+        "System.ComponentModel": "4.0.1-beta-*",
+        "System.Diagnostics.Debug": "4.0.11-beta-*",
+        "System.Diagnostics.Tools": "4.0.1-beta-*",
+        "System.Globalization": "4.0.11-beta-*",
+        "System.Linq": "4.0.1-beta-*",
+        "System.Linq.Expressions": "4.0.11-beta-*",
+        "System.Reflection": "4.1.0-beta-*",
+        "System.Reflection.Extensions": "4.0.1-beta-*",
+        "System.Reflection.Primitives": "4.0.1-beta-*",
+        "System.Resources.ResourceManager": "4.0.1-beta-*",
+        "System.Runtime": "4.0.21-beta-*",
+        "System.Threading": "4.0.11-beta-*"
+      }
+    }
+  },
+  "dependencies": {
+    "Autofac": "4.0.0-rc1-177"
+  }
+}

@@ -6,7 +6,7 @@ using Windows.UI.Notifications;
 using AutoFactory;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-namespace Test
+namespace Autofactory.CoreClr.Tests
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public sealed class LocaleAttribute : Attribute
@@ -32,9 +32,9 @@ namespace Test
     }
 
     [TestClass]
-    public class UnitTestsCoreClr
+    public class UnitTests_Core
     {
-        public static Assembly ThisAssembly = typeof (UnitTestsCoreClr).GetTypeInfo().Assembly;
+        public static Assembly ThisAssembly = typeof (UnitTests_Core).GetTypeInfo().Assembly;
 
         [TestInitialize]
         public void SetupForEachTest()
@@ -43,9 +43,9 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_MutipleAttribute()
+        public void Test_Core_MutipleAttribute()
         {
-            var factory = AutoFactory.Factory.Create<ILocale>(ThisAssembly);
+            var factory = AutoFactory.Factory.Create<ILocale>(ThisAssembly); 
             var parts = factory.SeekPartsFromAttribute<LocaleAttribute>(attr => attr.Locale == "en-US").ToList();
             Assert.AreEqual(2, parts.Count);
             Assert.IsTrue(parts.Any(p => p.GetType() == typeof (Class1)));
@@ -59,7 +59,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_Lazyness()
+        public void Test_Core_Lazyness()
         {
             var fact = AutoFactory.Factory.Create<IAnimal>(ThisAssembly);
             Assert.AreEqual(4, fact.GetPartTypes().Length);
@@ -71,7 +71,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_CreateOnlyOnce()
+        public void Test_Core_CreateOnlyOnce()
         {
             var fact = AutoFactory.Factory.Create<IAnimal>(typeof(Animal).GetTypeInfo().Assembly);
             var dog = fact.GetPart<Dog>();
@@ -83,7 +83,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_Create_CtorIntParam()
+        public void Test_Core_Create_CtorIntParam()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From<int>(20));
             var dog20 = fact.SeekPart(p => p.Name == "Dog");
@@ -93,7 +93,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_Create_CtorAnimalParam()
+        public void Test_Core_Create_CtorAnimalParam()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From<Animal>(new Cat(5)));
             var dog = fact.SeekPart(p => p.Name == "Dog");
@@ -105,7 +105,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_Create_CtorIAnimalParam()
+        public void Test_Core_Create_CtorIAnimalParam()
         {
             var fact = AutoFactory.Factory.Create<Animal>(new[] { typeof(Animal).GetTypeInfo().Assembly }, TypedParameter.From<IAnimal>(new Cat(2)));
             var dog = fact.SeekPart(p => p.Name == "Dog");
@@ -116,7 +116,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_Create_CtorTwoParams()
+        public void Test_Core_Create_CtorTwoParams()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From<Animal>(new Cat(2)), TypedParameter.From(1));
             var dog = fact.SeekPart(p => p.Name == "Dog");
@@ -128,7 +128,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_Create_CtorTwoParams_Rev()
+        public void Test_Core_Create_CtorTwoParams_Rev()
         {
             var fact = AutoFactory.Factory.Create<Animal>(typeof(Animal).GetTypeInfo().Assembly, TypedParameter.From(1), TypedParameter.From<Animal>(new Cat(2)));
             var dog = fact.SeekPart(p => p.Name == "Dog");
@@ -140,7 +140,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_SeekPart()
+        public void Test_Core_SeekPart()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From(10));
             var cat = fact.SeekPart(t => t.Name == "Cat");
@@ -149,7 +149,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_SeekPart_Exception()
+        public void Test_Core_SeekPart_Exception()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From(10));
             Assert.ThrowsException<AutoFactoryException>(() =>
@@ -159,7 +159,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_SeekParts()
+        public void Test_Core_SeekParts()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From(10));
             var noCats = fact.SeekParts(t => t.Name.StartsWith("D")).ToList();
@@ -171,7 +171,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_SeekPartFromAttr()
+        public void Test_Core_SeekPartFromAttr()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From(7));
             var dog = fact.SeekPartFromAttribute<DescriptionAttribute>(_ => _.Name == "Dog");
@@ -181,7 +181,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_SeekPartsFromAttr()
+        public void Test_Core_SeekPartsFromAttr()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From(7));
             var withAttr = fact.SeekPartsFromAttribute<DescriptionAttribute>(_ => true).ToList();
@@ -191,7 +191,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_ResolutionFail()
+        public void Test_Core_ResolutionFail()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From(7));
             Assert.ThrowsException<AutoFactoryException>(() =>
@@ -201,7 +201,7 @@ namespace Test
         }
 
         [TestMethod]
-        public void Test_NonGeneric()
+        public void Test_Core_NonGeneric()
         {
             var fact = AutoFactory.Factory.Create(typeof(Animal));
             var duck = fact.GetPart(typeof(Duck));
