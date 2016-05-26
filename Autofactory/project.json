@@ -1,31 +1,38 @@
 ﻿{
-  "version": "5.0.1-pre-*",
+  "version": "5.0.3-pre-*",
   "title": "Automatic Factory",
   "description": "A factory creator using AutoFac. Never write a Factory again!",
-  "authors": [ "Federico Colombo" ],
-  "tags": [ "Autofac", "Autofactory", "IoC", "DNX" ],
-  "iconUrl": "http://i.imgur.com/mp1tTZX.png",
-  "projectUrl": "https://github.com/thepirat000/AutoFactory",
-  "licenseUrl": "",
+  "packOptions": {
+    "summary": "A factory creator using AutoFac.",
+    "tags": [ "Autofac", "Autofactory", "IoC", "DNX" ],
+    "owners": [ "Federico Colombo" ],
+    "iconUrl": "http://i.imgur.com/mp1tTZX.png",
+    "projectUrl": "https://github.com/thepirat000/AutoFactory",
+    "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+    "requireLicenseAcceptance": false,
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/thepirat000/AutoFactory"
+    }
+  },
   "runtimes": {
-    "win10-arm": { },
-    "win10-arm-aot": { },
-    "win10-x86": { },
-    "win10-x86-aot": { },
-    "win10-x64": { },
-    "win10-x64-aot": { }
   },
   "frameworks": {
-    "uap10.0": { },
-    "dnxcore50": {
+    "net45": {
+
     },
-    "dotnet5.4": {
-    },
-    "net45": { },
-    "netcore45": {
+    "netstandard1.1": {
+      "dependencies": {
+      },
+      "imports": [
+        "dotnet5.2"
+      ]
     }
   },
   "dependencies": {
-    "Autofac": "4.0.0-rc1-177"
+    "Autofac": "4.0.0-rc2-240"
+  },
+  "buildOptions": {
+    "xmlDoc": true
   }
 }

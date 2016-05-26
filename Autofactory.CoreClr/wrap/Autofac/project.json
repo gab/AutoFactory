@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net45+win+wpa81+wp80": {
+      "bin": {
+        "assembly": "../../../packages/Autofac.3.5.2/lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll"
+      }
+    }
+  }
+}

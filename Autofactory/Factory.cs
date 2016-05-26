@@ -94,7 +94,7 @@ namespace AutoFactory
         #endregion
 
         #region Non-Generic Interface
- #if NET45
+#if NET45
         /// <summary>
         /// Creates a new factory for the base type given.
         /// </summary>

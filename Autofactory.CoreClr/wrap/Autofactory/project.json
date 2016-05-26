@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net45+win+wpa81+wp80": {
+      "wrappedProject": "../../Autofactory.CoreClr/Autofactory.CoreClr.csproj",
+      "bin": {
+        "assembly": "../../Autofactory.CoreClr/obj/{configuration}/Autofactory.dll",
+        "pdb": "../../Autofactory.CoreClr/obj/{configuration}/Autofactory.pdb"
+      },
+      "dependencies": {
+        "Autofac": "3.5.2"
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autofactory.CoreClr", "Autofactory.CoreClr\Autofactory.CoreClr\Autofactory.CoreClr.csproj", "{F0E1039A-7E99-4E98-BF45-2989E0571FDE}"
 EndProject
@@ -9,7 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autofactory.CoreClr.Tests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8C1839A4-E9E8-47D9-8B3F-205F63CD97D0}"
 	ProjectSection(SolutionItems) = preProject
-		..\Autofactory\global.json = ..\Autofactory\global.json
 		global.json = global.json
 	EndProjectSection
 EndProject
