@@ -4,9 +4,9 @@
   "authors": [ "" ],
   "testRunner": "xunit",
   "dependencies": {
-    "Autofactory": "5.0.3-*",
-    "xunit": "2.1.0",
-    "xunit.runner.dnx": "2.1.0-rc1-build204"
+    "Autofactory": { "target": "project" },
+    "xunit": "2.2.0-beta3-build3402",
+    "dotnet-test-xunit":  "2.2.0-preview2-build1029"
   },
   "frameworks": {
     "netcoreapp1.0": {
@@ -19,7 +19,13 @@
           "version": "1.0.0-rc2-*",
           "type": "platform"
         },
-        "dotnet-test-xunit": "1.0.0-rc2-*"
+        "xunit.runner.dnx": "2.1.0-rc1-build204"
+      }
+    },
+    "net451": {
+      "dependencies": {
+        "System.Runtime": "4.0.10.0",
+        "System.Threading.Tasks": "4.0.0"
       }
     }
   }

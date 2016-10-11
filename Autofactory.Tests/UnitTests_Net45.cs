@@ -1,4 +1,4 @@
-﻿#if NET45
+﻿#if NET451
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -137,7 +137,7 @@ namespace Autofactory.Tests
         public void Test_Net45_SeekPart_Exception()
         {
             var fact = AutoFactory.Factory.Create<Animal>(TypedParameter.From(10));
-            Assert.Throws<AutoFactoryException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 var cat = fact.SeekPart(t => t.Name != "Cat");
             });

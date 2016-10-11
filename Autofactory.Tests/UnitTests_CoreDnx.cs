@@ -130,7 +130,7 @@ namespace Autofactory.Tests
         public void Test_DnxCore_SeekPart_Exception()
         {
             var fact = AutoFactory.Factory.Create<Animal>(ThisAssembly, TypedParameter.From(10));
-            Assert.Throws<AutoFactoryException>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 var cat = fact.SeekPart(t => t.Name != "Cat");
             });

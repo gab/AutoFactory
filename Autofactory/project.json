@@ -1,10 +1,10 @@
 ﻿{
-  "version": "5.0.3-pre-*",
+  "version": "6.0.0-*",
   "title": "Automatic Factory",
   "description": "A factory creator using AutoFac. Never write a Factory again!",
   "packOptions": {
     "summary": "A factory creator using AutoFac.",
-    "tags": [ "Autofac", "Autofactory", "IoC", "DNX" ],
+    "tags": [ "Autofac", "Autofactory", "IoC" ],
     "owners": [ "Federico Colombo" ],
     "iconUrl": "http://i.imgur.com/mp1tTZX.png",
     "projectUrl": "https://github.com/thepirat000/AutoFactory",
@@ -23,14 +23,11 @@
     },
     "netstandard1.1": {
       "dependencies": {
-      },
-      "imports": [
-        "dotnet5.2"
-      ]
+      }
     }
   },
   "dependencies": {
-    "Autofac": "4.0.0-rc2-240"
+    "Autofac": "4.1.1"
   },
   "buildOptions": {
     "xmlDoc": true
